@@ -1,4 +1,4 @@
-name: lint
+name: main
 on:
   push:
     branches: [main]
@@ -46,3 +46,18 @@ jobs:
           args: --no-deps --all-features
         env:
           RUSTDOCFLAGS: --cfg docsrs
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+      - uses: actions/checkout@v3
+      - name: cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          toolchain: nightly
+          command: test
+          args: --locked --all-features --all-targets
